@@ -22,4 +22,3 @@ func main() {
 		fmt.Printf("Unknown subcommand: %s\n", os.Args[1])
 	}
 }
-
