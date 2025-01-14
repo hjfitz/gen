@@ -6,7 +6,7 @@ import (
 
 func GetChangelog(diff string, useTrump bool) string {
 	cp := `
-You are a helpful assistant tasked with summarizing Git diffs into concise changelogs. 
+You are a helpful assistant tasked with summarizing Git diffs into concise changelogs for pull requests.
 
 The following is a changelog generated from recent commits:
 {{diff}}
