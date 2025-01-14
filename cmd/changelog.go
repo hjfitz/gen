@@ -12,8 +12,13 @@ import (
 
 )
 
-func validate(depth *int, apiKey *string) bool {
-	return *depth != 0 && *apiKey != ""
+func validate(depth *int, apiKey *string) {
+	isValid := (*depth != 0 && *apiKey != "")
+
+	if !isValid {
+		fmt.Printf("Usage: agentic -a <api-key> -d <commit-depth> -t (optional)\n")
+		os.Exit(1)
+	}
 }
 
 func GenerateChangelog() {
@@ -23,11 +28,12 @@ func GenerateChangelog() {
 	trump := fs.Bool("t", false, "Make changelogs great again")
 	apiKey := fs.String("a", "", "Gemini API Key")
 
+	fs.Parse(os.Args[2:])
+
 	if *apiKey == "" {
 		*apiKey = os.Getenv("GEMINI_API_KEY")
 	}
 
-	fs.Parse(os.Args[2:])
 
 	ds := strconv.Itoa(*depth)
 
@@ -36,10 +42,7 @@ func GenerateChangelog() {
 	fmt.Printf("Valid: %t\n", validate(depth, apiKey))
 	*/
 
-	if (!validate(depth, apiKey)) {
-		fmt.Printf("Usage: agentic -a <api-key> -d <commit-depth> -t (optional)\n")
-		os.Exit(1)
-	}
+	validate(depth, apiKey)
 
 	wd, _ := os.Getwd()
 
