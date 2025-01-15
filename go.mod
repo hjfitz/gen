@@ -1,4 +1,4 @@
-module github.com/hjfitz/agentic-workflow
+module github.com/hjfitz/gen
 
 go 1.22.2
 

@@ -5,13 +5,18 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/hjfitz/agentic-workflow/lib/ai"
-	"github.com/hjfitz/agentic-workflow/lib/fs"
-	"github.com/hjfitz/agentic-workflow/prompts"
+	"github.com/hjfitz/gen/lib/ai"
+	"github.com/hjfitz/gen/lib/fs"
+	"github.com/hjfitz/gen/prompts"
 )
 
-func validateReadmeGenArgs(apiKey *string) bool {
-	return *apiKey != ""
+func validateReadmeArgs(apiKey *string) {
+	isValid := *apiKey != ""
+
+	if !isValid {
+		fmt.Printf("Usage: gen readme -a <api-key> -t (optional)\n")
+		os.Exit(1)
+	}
 }
 
 func GenerateReadme() {
@@ -26,7 +31,7 @@ func GenerateReadme() {
 
 	fls.Parse(os.Args[2:])
 
-	validateReadmeGenArgs(apiKey)
+	validateReadmeArgs(apiKey)
 
 	wd, _ := os.Getwd()
 

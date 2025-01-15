@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/hjfitz/agentic-workflow/cmd"
+	"github.com/hjfitz/gen/cmd"
 )
 
 func main() {
@@ -20,5 +20,7 @@ func main() {
 		cmd.GenerateReadme()
 	default:
 		fmt.Printf("Unknown subcommand: %s\n", os.Args[1])
+		fmt.Printf("Usage: `gen (readme|changelog)`")
+		os.Exit(1)
 	}
 }

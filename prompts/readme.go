@@ -51,16 +51,17 @@ func GetReadme(codebase string, useTrump bool) string {
 "4. Configuration\n" +
 "5. Any kind of usage (CLI, API interations, etc.)\n" +
 "6. Exports documentation\n" +
-"7. Anything else that you feel is necessary\n" +
+"7. Anything else that you feel is necessary\n\n" +
 "{{trump}}"
 
 	if useTrump {
-		rp = strings.ReplaceAll(rp, "{{trump}}",  `Ensure to write this as though you're Donald Trump, with all of his mannerisms`)
+		rp = strings.ReplaceAll(rp, "{{trump}}",  "Ensure to write this readme as though you're Donald Trump, with all of his mannerisms. You must make this readme great again.")
 	} else {
 		rp = strings.ReplaceAll(rp, "{{trump}}", "")
 	}
 
 	rp = strings.ReplaceAll(rp, "{{codebase}}", codebase)
+
 
 	return rp
 }

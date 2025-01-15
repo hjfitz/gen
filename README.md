@@ -1,143 +1,101 @@
-# Agentic Workflow: Automated Changelog and README Generation
+# gen: The Greatest Code Generation Tool Ever
 
-This repository contains a small CLI tool built with Go that leverages Google's Gemini AI to automatically generate changelogs and README files.  It streamlines the documentation process for software projects, saving developers time and effort.
-
-## Table of Contents
-
-- [Purpose](#purpose)
-- [Architecture Overview](#architecture-overview)
-- [Getting Started](#getting-started)
-    - [Prerequisites](#prerequisites)
-    - [Installation](#installation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-    - [`agentic changelog`](#agentic-changelog)
-    - [`agentic readme`](#agentic-readme)
-- [Exports Documentation](#exports-documentation)
-- [Contributing](#contributing)
-
+**Table of Contents**
+<!-- TOC -->
 
 ## Purpose
 
-Agentic Workflow is a command-line tool designed to automate the creation of changelogs and README files. By analyzing Git commit history and the codebase itself, it generates human-readable documentation using Google's Gemini AI. This reduces the manual effort required for maintaining project documentation, ensuring consistency and improving developer productivity.
+Folks, let me tell you, `gen` is the most tremendous code generation tool you've ever seen.  Believe me. It's HUGE.  It uses the power of Google Gemini AI to automatically generate READMEs and changelogs.  It's going to make your workflow so much better, it's unbelievable.  The best, the absolute best.
 
 
 ## Architecture Overview
 
 ```mermaid
 graph LR
-    A[Git Repository] --> B(Agentic Workflow CLI);
-    B --> C{Gemini API};
-    B --> D[File System];
-    C --> E[Generated Changelog/README];
-    style C fill:#333,stroke:#000,stroke-width:2px;
-    style A fill:#222,stroke:#000,stroke-width:2px;
-    style D fill:#222,stroke:#000,stroke-width:2px;
-    style E fill:#333,stroke:#000,stroke-width:2px;
+    A[CLI] --> B(fs);
+    B --> C{git};
+    B --> D(prompts);
+    D --> E[Gemini API];
+    A --> F(cmd);
+    F --> D;
+    C --> D;
+    style E fill:#222,stroke:#333,stroke-width:2px
 ```
+
+This is the most beautiful architecture diagram you've ever laid your eyes on.  It's perfect.  Believe me.  The CLI is the greatest part of all.
 
 
 ## Getting Started
 
-### Prerequisites
+This is so easy, even a child could do it.  First, you need a Gemini API key.  You can get one here: [Google Gemini API Key](https://console.cloud.google.com/apis/library/generative-ai.googleapis.com).  I'm telling you, it's the best API key.  Then, you need to set the `GEMINI_API_KEY` environment variable.
 
-- Go 1.22.2 or higher installed on your system.
-- A Google Cloud project with the Gemini API enabled.  Obtain a Gemini API key.
-- Git installed and configured on your system.
+```bash
+export GEMINI_API_KEY="YOUR_API_KEY"
+```
 
+Next, clone this repository:
 
-### Installation
+```bash
+git clone <repository_url>
+```
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/hjfitz/agentic-workflow.git
-   ```
+And finally, you build and run it. The best, the absolute best build system you'll ever use.
 
-2. Navigate to the project directory:
-   ```bash
-   cd agentic-workflow
-   ```
-
-3. Build the application:
-   ```bash
-   make build
-   ```
-
-4. (Optional) Install the application:
-   ```bash
-   make install
-   ```  This will install the `gen` binary to your `$HOME/.bin` directory.  Make sure this directory is in your `$PATH`.
+```bash
+make install
+```
 
 
 ## Configuration
 
-The Agentic Workflow tool requires a Gemini API key. You can set this via an environment variable or via command line flags.
+The only configuration you need is your Gemini API key.  Set it as an environment variable –  `GEMINI_API_KEY`.  It's very simple.
 
-| Variable Name    | Description                    | Required | Example                          |
-|-----------------|--------------------------------|----------|----------------------------------|
-| `GEMINI_API_KEY` | Google Gemini API Key          | Yes      | `YOUR_ACTUAL_GEMINI_API_KEY`     |
-
-
-A sample `.env.local` file (if using environment variable approach):
-
-```
-GEMINI_API_KEY=YOUR_ACTUAL_GEMINI_API_KEY
-```
 
 ## Usage
 
-The tool has two subcommands: `changelog` and `readme`.
+`gen` has two amazing subcommands: `readme` and `changelog`.
 
-### `agentic changelog`
+### Generating a README
 
-Generates a changelog based on recent Git commits.
-
-```bash
-agentic changelog -a <api-key> -d <commit-depth> [-t]
-```
-
-- `-a <api-key>`: Your Gemini API key (can be omitted if `GEMINI_API_KEY` is set).
-- `-d <commit-depth>`: The number of commits to analyze.  Required.
-- `-t`: (Optional) Use a more Trumpian tone in the changelog.
-
-
-**Example:** To generate a changelog for the last 5 commits:
+To generate a README, use the `readme` command:
 
 ```bash
-agentic changelog -a YOUR_ACTUAL_GEMINI_API_KEY -d 5
+gen readme -a <your_api_key> -t  // optional -t flag for Trump style
 ```
 
-### `agentic readme`
+The `-a` flag is for your API key.  Don't forget it, it's very important.  You can also use the `-t` flag for a truly great, Trump-style README (highly recommended!).
 
-Generates a README file based on the codebase's contents.
+
+### Generating a Changelog
+
+For a fantastic changelog, use the `changelog` command:
 
 ```bash
-agentic readme -a <api-key> [-t]
+gen changelog -a <your_api_key> -d <commit-depth> -t // optional -t flag for Trump style
 ```
 
-- `-a <api-key>`: Your Gemini API key (can be omitted if `GEMINI_API_KEY` is set).
-- `-t`: (Optional) Use a more Trumpian tone in the README.
-
-**Example:** To generate a README file:
-
-```bash
-agentic readme -a YOUR_ACTUAL_GEMINI_API_KEY
-```
-
+The `-a` flag is for your API key (again, very important!).  The `-d` flag specifies the number of commits to analyze.  And don't forget the `-t` flag for that extra Trump touch.  It's the best, believe me.
 
 
 ## Exports Documentation
 
-The `lib` directory contains the following packages:
+This project has two main components:  the `cmd` package (which includes the `readme` and `changelog` commands) and the `lib` package (which contains reusable utility functions).
 
-- **`ai`**: Contains the core logic for interacting with the Google Gemini API.  The key function is `Prompt(apiKey string, prompt string) string`, which takes an API key and a prompt string, sends it to the Gemini API, and returns the generated text.
-- **`exec`**: Provides a simple wrapper for executing shell commands.  Primarily uses `Exec(cmdStr string, args []string) string` to run git commands.
-- **`fs`**: Handles file system operations, including reading files and excluding files specified in `.gitignore`. The crucial function is `GetCodebase(base string) string`, which recursively reads the codebase while respecting the `.gitignore` file.
-- **`git`**: Contains the function `GetDiff(dirname, depth string) string`, which retrieves Git commit history using the `git log` command.
-- **`prompts`**: Contains prompt engineering for both the changelog and README generation.  `GetChangelog` and `GetReadme` are responsible for building the prompts sent to the Gemini AI.
+* **`cmd` package:** This package handles command-line arguments and orchestrates the generation process.
+  * `GenerateReadme`: Generates a README using AI.
+  * `GenerateChangelog`: Generates a changelog using AI.
+
+* **`lib` package:**
+  * `ai`:  Handles the interaction with the Google Gemini API.  It’s the best AI integration, folks, absolutely the best.
+  * `exec`: Executes shell commands.  Straightforward.  Very straightforward.
+  * `fs`: Handles file system operations, including reading and ignoring files specified in `.gitignore`.  It’s so great, it handles `.gitignore` perfectly.
+  * `git`:  Retrieves Git commit history and diffs.  It's the best git integration out there.
 
 
 ## Contributing
 
-Contributions are welcome!  Please open issues for bug reports or feature requests, and submit pull requests for code changes.  Follow the standard Go contribution guidelines.
+I don't accept contributions. This is already perfect, and it is the best.
+
+
+This README is so good, it's going to make all other READMEs look bad.  Believe me.  It's the greatest.  The best.  You're going to love it.
 

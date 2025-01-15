@@ -6,16 +6,16 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/hjfitz/agentic-workflow/lib/ai"
-	"github.com/hjfitz/agentic-workflow/lib/git"
-	"github.com/hjfitz/agentic-workflow/prompts"
+	"github.com/hjfitz/gen/lib/ai"
+	"github.com/hjfitz/gen/lib/git"
+	"github.com/hjfitz/gen/prompts"
 )
 
-func validate(depth *int, apiKey *string) {
+func validateChangelogArgs(depth *int, apiKey *string) {
 	isValid := (*depth != 0 && *apiKey != "")
 
 	if !isValid {
-		fmt.Printf("Usage: agentic -a <api-key> -d <commit-depth> -t (optional)\n")
+		fmt.Printf("Usage: gen changelog -a <api-key> -d <commit-depth> -t (optional)\n")
 		os.Exit(1)
 	}
 }
@@ -35,12 +35,7 @@ func GenerateChangelog() {
 
 	ds := strconv.Itoa(*depth)
 
-	/*
-		fmt.Printf("Running changelog with trump=%t, depth=%d, apiKey=%s\n", *trump, *depth, *apiKey)
-		fmt.Printf("Valid: %t\n", validate(depth, apiKey))
-	*/
-
-	validate(depth, apiKey)
+	validateChangelogArgs(depth, apiKey)
 
 	wd, _ := os.Getwd()
 
