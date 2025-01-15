@@ -1,8 +1,8 @@
 package git
 
 import (
-	"os/exec"
 	"fmt"
+	"os/exec"
 )
 
 func GetDiff(dirname, depth string) string {
@@ -14,9 +14,8 @@ func GetDiff(dirname, depth string) string {
 		"--pretty=format:COMMIT: %H%nAUTHOR: %an%nDATE: %ad%nSUBJECT: %s%n%nBODY:%n%b%n---",
 	}
 
-
-    sh := exec.Command("git", args...)
-    stdout, _ := sh.Output()
+	sh := exec.Command("git", args...)
+	stdout, _ := sh.Output()
 
 	return string(stdout)
 }

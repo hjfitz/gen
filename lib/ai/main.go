@@ -1,8 +1,8 @@
 package ai
 
 import (
-	"fmt"
 	"context"
+	"fmt"
 
 	"github.com/google/generative-ai-go/genai"
 	"google.golang.org/api/option"
@@ -20,9 +20,7 @@ func Prompt(apiKey string, prompt string) string {
 
 	return buildOutput(resp)
 
-
 }
-
 
 func buildOutput(resp *genai.GenerateContentResponse) string {
 	out := ""

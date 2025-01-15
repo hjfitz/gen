@@ -2,14 +2,13 @@ package cmd
 
 import (
 	"flag"
-	"os"
 	"fmt"
+	"os"
 	"strconv"
 
-	"github.com/hjfitz/agentic-workflow/lib/git"
 	"github.com/hjfitz/agentic-workflow/lib/ai"
+	"github.com/hjfitz/agentic-workflow/lib/git"
 	"github.com/hjfitz/agentic-workflow/prompts"
-
 )
 
 func validate(depth *int, apiKey *string) {
@@ -34,12 +33,11 @@ func GenerateChangelog() {
 		*apiKey = os.Getenv("GEMINI_API_KEY")
 	}
 
-
 	ds := strconv.Itoa(*depth)
 
 	/*
-	fmt.Printf("Running changelog with trump=%t, depth=%d, apiKey=%s\n", *trump, *depth, *apiKey)
-	fmt.Printf("Valid: %t\n", validate(depth, apiKey))
+		fmt.Printf("Running changelog with trump=%t, depth=%d, apiKey=%s\n", *trump, *depth, *apiKey)
+		fmt.Printf("Valid: %t\n", validate(depth, apiKey))
 	*/
 
 	validate(depth, apiKey)

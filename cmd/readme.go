@@ -2,10 +2,12 @@ package cmd
 
 import (
 	"flag"
-	"os"
 	"fmt"
+	"os"
 
+	"github.com/hjfitz/agentic-workflow/lib/ai"
 	"github.com/hjfitz/agentic-workflow/lib/fs"
+	"github.com/hjfitz/agentic-workflow/prompts"
 )
 
 func validateReadmeGenArgs(apiKey *string) bool {
@@ -15,7 +17,7 @@ func validateReadmeGenArgs(apiKey *string) bool {
 func GenerateReadme() {
 	fls := flag.NewFlagSet("readme", flag.ExitOnError)
 
-	//trump := fs.Bool("t", false, "Make changelogs great again")
+	trump := fls.Bool("t", false, "Make your readme great again")
 	apiKey := fls.String("a", "", "Gemini API Key")
 
 	if *apiKey == "" {
@@ -26,11 +28,13 @@ func GenerateReadme() {
 
 	validateReadmeGenArgs(apiKey)
 
-	fmt.Printf("Running subcommand1 with option: %s\n", *apiKey)
-
 	wd, _ := os.Getwd()
-	
-	cb := fs.GetCodebase(wd, []string{})
 
-	fmt.Println(cb)
+	cb := fs.GetCodebase(wd)
+
+	rp := prompts.GetReadme(cb, *trump)
+
+	out := ai.Prompt(*apiKey, rp)
+
+	fmt.Println(out)
 }
