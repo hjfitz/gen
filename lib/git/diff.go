@@ -19,3 +19,14 @@ func GetDiff(dirname, depth string) string {
 
 	return string(stdout)
 }
+
+func GetMostRecentChanges() string {
+
+	args := []string{"diff", "--cached"}
+
+	sh := exec.Command("git", args...)
+
+	stdout, _ := sh.Output()
+
+	return string(stdout)
+}

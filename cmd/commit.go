@@ -21,8 +21,7 @@ func GenerateCommit() {
 		*apiKey = os.Getenv("GEMINI_API_KEY")
 	}
 
-	wd, _ := os.Getwd()
-	diff := git.GetDiff(wd, "2")
+	diff := git.GetMostRecentChanges()
 
 	cp := prompts.GetCommit(diff)
 
