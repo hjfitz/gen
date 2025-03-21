@@ -22,7 +22,6 @@ func Prompt(apiKey string, prompt string) string {
 		fmt.Printf("Got error: %s\n", err)
 	}
 
-
 	out := ""
 	for _, cand := range resp.Candidates {
 		if cand.Content != nil {

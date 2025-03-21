@@ -48,7 +48,6 @@ func readFile(filename string) string {
 func GetCodebase(base string) string {
 	gitignore := getGitignore(base)
 
-
 	codebase := ""
 	_ = filepath.Walk(base, func(path string, info fs.FileInfo, err error) error {
 		if err != nil {
