@@ -1,11 +1,13 @@
 package fs
 
 import (
+	"bytes"
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
-	"io/fs"
 	"strings"
+	"unicode/utf8"
 
 	gitignore "github.com/sabhiram/go-gitignore"
 )
@@ -25,12 +27,21 @@ func getGitignore(base string) *gitignore.GitIgnore {
 
 func readFile(filename string) string {
 	dat, _ := os.ReadFile(filename)
+	// Validate and convert content to UTF-8 if necessary
 	content := string(dat)
+	if !utf8.ValidString(content) {
+		// Convert to UTF-8 by replacing invalid sequences
+		content = string(bytes.ToValidUTF8([]byte(content), []byte("?")))
+	}
+
 	if len(content) == 0 {
 		return ""
 	}
+
 	wd, _ := os.Getwd()
+
 	localFilename := strings.ReplaceAll(filename, wd, "")
+
 	return fmt.Sprintf("## filename: %s\n\n%s\n\n\n", localFilename, content)
 }
 
@@ -47,13 +58,14 @@ func GetCodebase(base string) string {
 
 		if gitignore != nil && gitignore.MatchesPath(path) {
 			if info.IsDir() {
-				//fmt.Printf("Skipping directory: %q\n", path)
 				return filepath.SkipDir
 			}
-			//fmt.Printf("Skipping file: %q\n", path)
 			return nil
 		}
 
+		if os.Getenv("DEBUG") != "" {
+			fmt.Printf("Loaded %s\n", path)
+		}
 		codebase += readFile(path)
 		return nil
 	})

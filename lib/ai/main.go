@@ -12,17 +12,17 @@ func Prompt(apiKey string, prompt string) string {
 	ctx := context.Background()
 	opt := option.WithAPIKey(apiKey)
 	client, _ := genai.NewClient(ctx, opt)
-	model := client.GenerativeModel("gemini-1.5-flash")
+	model := client.GenerativeModel("gemini-2.0-flash")
 
 	text := genai.Text(prompt)
 
-	resp, _ := model.GenerateContent(ctx, text)
+	resp, err := model.GenerateContent(ctx, text)
 
-	return buildOutput(resp)
+	if err != nil {
+		fmt.Printf("Got error: %s\n", err)
+	}
 
-}
 
-func buildOutput(resp *genai.GenerateContentResponse) string {
 	out := ""
 	for _, cand := range resp.Candidates {
 		if cand.Content != nil {

@@ -13,13 +13,19 @@ func main() {
 		os.Exit(1)
 	}
 
-	switch os.Args[1] {
+	command := os.Args[1]
+
+	switch command {
 	case "changelog":
 		cmd.GenerateChangelog()
 	case "readme":
 		cmd.GenerateReadme()
+	case "commit":
+		fallthrough
+	case "cmt":
+		cmd.GenerateCommit()
 	default:
-		fmt.Printf("Unknown subcommand: %s\n", os.Args[1])
+		fmt.Printf("Unknown subcommand: \"%s\"\n", command)
 		fmt.Printf("Usage: `gen (readme|changelog)`")
 		os.Exit(1)
 	}
