@@ -6,24 +6,21 @@ import (
 )
 
 func GetDiff(dirname, depth string) string {
-	args := []string{
+	return git(
 		"log",
-		"-n", fmt.Sprintf("%s", depth),
+		"-n",
+		fmt.Sprintf("%s", depth),
 		"--stat",
 		"--patch",
 		"--pretty=format:COMMIT: %H%nAUTHOR: %an%nDATE: %ad%nSUBJECT: %s%n%nBODY:%n%b%n---",
-	}
-
-	sh := exec.Command("git", args...)
-	stdout, _ := sh.Output()
-
-	return string(stdout)
+	)
 }
 
 func GetMostRecentChanges() string {
+	return git("diff", "--cached")
+}
 
-	args := []string{"diff", "--cached"}
-
+func git(args ...string) string {
 	sh := exec.Command("git", args...)
 
 	stdout, _ := sh.Output()
