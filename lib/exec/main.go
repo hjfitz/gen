@@ -1,16 +1,13 @@
 package exec
 
 import (
-	"fmt"
 	"os/exec"
+	"strings"
 )
 
-func Exec(cmdStr string, args []string) string {
+func Exec(cmdStr string) string {
 	cmd := exec.Command(cmdStr)
-	stdout, err := cmd.Output()
+	stdout, _ := cmd.Output()
 
-	fmt.Println(err)
-	fmt.Println(stdout)
-
-	return string(stdout)
+	return strings.TrimSpace(string(stdout))
 }

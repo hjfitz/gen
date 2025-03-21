@@ -6,6 +6,8 @@ import (
 	"os"
 
 	"github.com/hjfitz/gen/lib/ai"
+	"github.com/hjfitz/gen/lib/exec"
+	//"github.com/hjfitz/gen/lib/exec"
 	"github.com/hjfitz/gen/lib/git"
 	"github.com/hjfitz/gen/prompts"
 )
@@ -14,6 +16,7 @@ func GenerateCommit() {
 
 	fs := flag.NewFlagSet("commit", flag.ExitOnError)
 	apiKey := fs.String("a", "", "Gemini API Key")
+	shouldPrint := fs.Bool("p", false, "Whether to print the commit instead of making it")
 
 	fs.Parse(os.Args[2:])
 
@@ -25,7 +28,12 @@ func GenerateCommit() {
 
 	cp := prompts.GetCommit(diff)
 
-	out := ai.Prompt(*apiKey, cp)
+	msg := ai.Prompt(*apiKey, cp)
 
-	fmt.Println(out)
+	if *shouldPrint {
+		fmt.Println(msg)
+	} else {
+		command := fmt.Sprintf("git commit -m \"%s\"", msg)
+		exec.Exec(command)
+	}
 }

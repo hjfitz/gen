@@ -3,6 +3,7 @@ package git
 import (
 	"fmt"
 	"os/exec"
+	"strings"
 )
 
 func GetDiff(dirname, depth string) string {
@@ -25,5 +26,5 @@ func git(args ...string) string {
 
 	stdout, _ := sh.Output()
 
-	return string(stdout)
+	return strings.TrimSpace(string(stdout))
 }

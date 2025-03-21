@@ -3,6 +3,7 @@ package ai
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/google/generative-ai-go/genai"
 	"google.golang.org/api/option"
@@ -30,5 +31,5 @@ func Prompt(apiKey string, prompt string) string {
 			}
 		}
 	}
-	return out
+	return strings.TrimSpace(out)
 }
