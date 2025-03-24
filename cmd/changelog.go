@@ -33,16 +33,21 @@ func GenerateChangelog() {
 		*apiKey = os.Getenv("GEMINI_API_KEY")
 	}
 
-	ds := strconv.Itoa(*depth)
+	if *apiKey == "" {
+		fmt.Printf("Usage: gen changelog -a <api-key> -d <commit-depth> -t (optional)\n")
+		os.Exit(1)
+	}
 
-	validateChangelogArgs(depth, apiKey)
-
-	wd, _ := os.Getwd()
-
-	diff := git.GetDiff(wd, ds)
+	diff := ""
+	if *depth == 0 {
+		main := git.GetMainBranch()
+		diff = git.GetDiffAgainstMain(main)
+	} else {
+		ds := strconv.Itoa(*depth)
+		diff = git.GetDiff(ds)
+	}
 
 	cp := prompts.GetChangelog(diff, *trump)
-
 	out := ai.Prompt(*apiKey, cp)
 
 	fmt.Println(out)
