@@ -11,7 +11,6 @@ import (
 )
 
 func GenerateCommit() {
-
 	fs := flag.NewFlagSet("commit", flag.ExitOnError)
 	apiKey := fs.String("a", "", "Gemini API Key")
 

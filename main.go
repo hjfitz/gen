@@ -24,6 +24,8 @@ func main() {
 		fallthrough
 	case "cmt":
 		cmd.GenerateCommit()
+	case "arch":
+		cmd.GenerateArchitecture()
 	default:
 		fmt.Printf("Unknown subcommand: \"%s\"\n", command)
 		fmt.Printf("Usage: `gen (readme|changelog)`")

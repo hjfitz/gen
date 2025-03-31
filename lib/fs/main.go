@@ -6,6 +6,7 @@ import (
 	"io/fs"
 	"os"
 	"path/filepath"
+	"slices"
 	"strings"
 	"unicode/utf8"
 
@@ -70,4 +71,36 @@ func GetCodebase(base string) string {
 	})
 
 	return codebase
+}
+
+func getExtension(filename string) string {
+	cks := strings.Split(filename, ".")
+	return cks[len(cks)-1]
+}
+
+func isTerraform(filename string) bool {
+	ext := getExtension(filename)
+	if strings.Contains(filename, "lock") {
+		return false
+	}
+	return slices.Contains([]string{"tf", "hcl", "tfvars", "tpl"}, ext)
+}
+
+func GetIAC(base string) string {
+	infra_code := ""
+
+	_ = filepath.Walk(base, func(path string, info fs.FileInfo, err error) error {
+		if err != nil {
+			fmt.Printf("Error accessing path %q: %v\n", path, err)
+			return err
+		}
+
+		if isTerraform(path) {
+			infra_code += readFile(path)
+		}
+
+		return nil
+	})
+
+	return infra_code
 }
