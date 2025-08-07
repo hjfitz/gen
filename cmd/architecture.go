@@ -1,13 +1,10 @@
 package cmd
 
 import (
-	"context"
 	"flag"
 	"fmt"
 	"os"
 	"strings"
-
-	"github.com/dreampuf/mermaid.go"
 
 	"github.com/hjfitz/gen/lib/ai"
 	"github.com/hjfitz/gen/lib/fs"
@@ -17,7 +14,6 @@ import (
 func GenerateArchitecture() {
 	fset := flag.NewFlagSet("arch", flag.ExitOnError)
 	apiKey := fset.String("a", "", "Gemini API Key")
-	should_render := fset.Bool("r", false, "Whether to render the diagram or not")
 
 	fset.Parse(os.Args[2:])
 
@@ -47,13 +43,6 @@ func GenerateArchitecture() {
 
 		out = strings.TrimSpace(out)
 	}
-
-
-	if *should_render {
-		ctx := context.Background()
-		re, _ := mermaid_go.NewRenderEngine(ctx)
-	}
-
 
 	fmt.Println(out)
 }
